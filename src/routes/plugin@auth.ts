@@ -1,18 +1,14 @@
-import type { RequestHandler } from "@builder.io/qwik-city";
-import { onRequest } from "~/lib/auth";
+import { QwikAuth$ } from '@auth/qwik';
+import { getAuthConfig } from '~/lib/auth';
+import { RequestEventCommon } from '@builder.io/qwik-city';
 
-/**
- * Auth.js plugin for Qwik
- *
- * This file is a special Qwik middleware that runs on every request.
- * The @auth suffix in the filename makes it an authentication plugin.
- * It integrates Auth.js with Qwik's routing system, handling all
- * authentication-related requests automatically.
- *
- * This middleware:
- * - Handles OAuth callbacks
- * - Manages session cookies
- * - Provides session data to all routes
- * - Protects authenticated routes
- */
-export { onRequest };
+export const { useSession, useSignIn, useSignOut } = QwikAuth$(
+  (event: RequestEventCommon) => {
+    const env = (key: string) => event.env.get(`VITE_${key}`);
+
+    return {
+      ...getAuthConfig(env),
+      trustHost: true,
+    };
+  },
+);

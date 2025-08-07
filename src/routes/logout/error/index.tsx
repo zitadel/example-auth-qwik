@@ -1,6 +1,7 @@
-import { component$ } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
+import { component$ } from '@builder.io/qwik';
+import { useLocation } from '@builder.io/qwik-city';
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * Displays a user-friendly error page for failed logout attempts.
  *
@@ -12,7 +13,7 @@ import { useLocation } from "@builder.io/qwik-city";
 export default component$(() => {
   const loc = useLocation();
   const reason =
-    loc.url.searchParams.get("reason") || "An unknown error occurred.";
+    loc.url.searchParams.get('reason') || 'An unknown error occurred.';
 
   return (
     <main class="grid flex-1 place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">

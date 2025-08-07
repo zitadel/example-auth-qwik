@@ -1,5 +1,5 @@
-import { SignOutButton } from "./SignOutButton";
-import { component$ } from "@builder.io/qwik";
+import { SignOutButton } from './SignOutButton';
+import { component$ } from '@builder.io/qwik';
 
 type HeaderProps = {
   isAuthenticated: boolean;
@@ -12,6 +12,7 @@ export const Header = component$<HeaderProps>((props) => {
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <img
+              // eslint-disable-next-line qwik/jsx-img
               src="/app-logo.svg"
               alt="App Icon"
               width={40}

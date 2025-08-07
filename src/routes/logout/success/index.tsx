@@ -1,17 +1,8 @@
-import { component$, useVisibleTask$ } from "@builder.io/qwik";
+import { component$ } from '@builder.io/qwik';
+import type { DocumentHead } from '@builder.io/qwik-city';
 
+// noinspection JSUnusedGlobalSymbols
 export default component$(() => {
-  useVisibleTask$(() => {
-    const meta = document.createElement("meta");
-    meta.setAttribute("http-equiv", "refresh");
-    meta.setAttribute("content", "10;url=/");
-    document.head.appendChild(meta);
-
-    return () => {
-      document.head.removeChild(meta);
-    };
-  });
-
   return (
     <main class="grid flex-1 place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
       <div class="text-center">
@@ -48,3 +39,14 @@ export default component$(() => {
     </main>
   );
 });
+
+// noinspection JSUnusedGlobalSymbols
+export const head: DocumentHead = {
+  title: 'Logout Successful',
+  meta: [
+    {
+      httpEquiv: 'refresh',
+      content: '10;url=/',
+    },
+  ],
+};

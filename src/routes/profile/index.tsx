@@ -1,23 +1,24 @@
-import { component$, useSignal, useTask$ } from "@builder.io/qwik";
-import { useSession, useSignIn } from "~/lib/auth";
-import { Header } from "~/components/Header";
-import { Footer } from "~/components/Footer";
+import { component$, useSignal, useTask$ } from '@builder.io/qwik';
+import { Header } from '~/components/Header';
+import { Footer } from '~/components/Footer';
+import { useSession, useSignIn } from '~/routes/plugin@auth';
 
+// noinspection JSUnusedGlobalSymbols
 export default component$(() => {
   const session = useSession();
   const signIn = useSignIn();
   const isLoading = useSignal(true);
 
-  useTask$(({ track }) => {
+  useTask$(async ({ track }) => {
     track(() => session.value);
 
     if (session.value === undefined) {
       isLoading.value = true;
     } else if (session.value === null) {
       // Not authenticated, redirect to sign in
-      signIn.submit({
-        providerId: "zitadel",
-        options: { callbackUrl: "/profile" },
+      await signIn.submit({
+        providerId: 'zitadel',
+        options: { callbackUrl: '/profile' },
       });
     } else {
       isLoading.value = false;

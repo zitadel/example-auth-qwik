@@ -14,7 +14,7 @@ const { dependencies = {}, devDependencies = {} } = pkg as any as {
 
 errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 
-export default defineConfig(({ command, mode }): UserConfig => {
+export default defineConfig((): UserConfig => {
 	return {
 		plugins: [
 			qwikCity(),
@@ -42,7 +42,7 @@ function errorOnDuplicatesPkgDeps(
 	devDependencies: PkgDep,
 	dependencies: PkgDep,
 ) {
-	let msg = '';
+	let msg: string;
 	const duplicateDeps = Object.keys(devDependencies).filter(
 		(dep) => dependencies[dep],
 	);

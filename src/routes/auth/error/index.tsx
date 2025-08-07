@@ -1,7 +1,8 @@
-import { component$ } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
-import { getMessage } from "../message";
+import { component$ } from '@builder.io/qwik';
+import { useLocation } from '@builder.io/qwik-city';
+import { getMessage } from '../message';
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * Custom Auth.js error page that matches the application's design system.
  *
@@ -10,8 +11,8 @@ import { getMessage } from "../message";
  */
 export default component$(() => {
   const loc = useLocation();
-  const error = loc.url.searchParams.get("error") || "default";
-  const { heading, message } = getMessage(error, "auth-error");
+  const error = loc.url.searchParams.get('error') || 'default';
+  const { heading, message } = getMessage(error, 'auth-error');
 
   return (
     <main class="grid flex-1 place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">

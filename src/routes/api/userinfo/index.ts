@@ -1,5 +1,7 @@
-import type { RequestHandler } from "@builder.io/qwik-city";
+import { type RequestHandler } from '@builder.io/qwik-city';
+import type { Session } from '@auth/core/types';
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * ZITADEL UserInfo API Route
  *
@@ -18,18 +20,17 @@ import type { RequestHandler } from "@builder.io/qwik-city";
  *
  * Extended user profile with ZITADEL-specific claims like roles and metadata.
  */
-export const onGet: RequestHandler = async ({ sharedMap, json }) => {
-  // Get session from sharedMap (populated by Auth.js middleware)
-  const session = sharedMap.get("session");
+export const onGet: RequestHandler = async ({ sharedMap, json, env }) => {
+  const session = sharedMap.get('session') as Session | null;
 
   if (!session?.accessToken) {
-    json(401, { error: "Unauthorized" });
+    json(401, { error: 'Unauthorized' });
     return;
   }
 
   try {
     const response = await fetch(
-      `${process.env.ZITADEL_DOMAIN}/oidc/v1/userinfo`,
+      `${env.get('VITE_ZITADEL_DOMAIN')}/oidc/v1/userinfo`,
       {
         headers: {
           Authorization: `Bearer ${session.accessToken}`,
@@ -38,13 +39,16 @@ export const onGet: RequestHandler = async ({ sharedMap, json }) => {
     );
 
     if (!response.ok) {
+      // noinspection ExceptionCaughtLocallyJS
       throw new Error(`UserInfo API error: ${response.status}`);
     }
 
     const userInfo = await response.json();
     json(200, userInfo);
+    return;
   } catch (error) {
-    console.error("UserInfo fetch failed:", error);
-    json(500, { error: "Failed to fetch user info" });
+    console.error('UserInfo fetch failed:', error);
+    json(500, { error: 'Failed to fetch user info' });
+    return;
   }
 };

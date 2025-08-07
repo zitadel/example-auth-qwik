@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$ } from '@builder.io/qwik';
 
 export const Footer = component$(() => {
   return (
@@ -8,6 +8,7 @@ export const Footer = component$(() => {
           <div class="flex items-center space-x-2">
             <span class="text-sm text-gray-600">Powered by</span>
             <img
+              // eslint-disable-next-line qwik/jsx-img
               src="/zitadel-logo.svg"
               alt="Zitadel"
               width={295}

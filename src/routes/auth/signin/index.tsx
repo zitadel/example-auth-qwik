@@ -1,8 +1,9 @@
-import { component$, useSignal, useTask$ } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
-import { useSignIn } from "~/lib/auth";
-import { getMessage } from "../message";
+import { component$, useSignal, useTask$ } from '@builder.io/qwik';
+import { useLocation } from '@builder.io/qwik-city';
+import { getMessage } from '../message';
+import { useSignIn } from '~/routes/plugin@auth';
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * Custom Auth.js sign-in page that matches the application's design system.
  *
@@ -12,13 +13,13 @@ import { getMessage } from "../message";
 export default component$(() => {
   const loc = useLocation();
   const signIn = useSignIn();
-  const error = loc.url.searchParams.get("error");
-  const callbackUrl = loc.url.searchParams.get("callbackUrl") || "/profile";
-  const csrfToken = useSignal<string>("");
+  const error = loc.url.searchParams.get('error');
+  const callbackUrl = loc.url.searchParams.get('callbackUrl') || '/profile';
+  const csrfToken = useSignal<string>('');
 
   useTask$(async () => {
     // Get CSRF token from Auth.js
-    const response = await fetch("/api/auth/csrf");
+    const response = await fetch('/api/auth/csrf');
     const data = await response.json();
     csrfToken.value = data.csrfToken;
   });
@@ -46,20 +47,20 @@ export default component$(() => {
         </h1>
         <p
           class={`mt-6 text-lg font-medium text-pretty sm:text-xl/8 ${
-            error ? "text-red-600" : "text-gray-500"
+            error ? 'text-red-600' : 'text-gray-500'
           }`}
         >
           {error
-            ? getMessage(error, "signin-error").message
-            : "Continue to your account"}
+            ? getMessage(error, 'signin-error').message
+            : 'Continue to your account'}
         </p>
 
         <div class="mt-10">
           <form
             preventdefault:submit
-            onSubmit$={() => {
-              signIn.submit({
-                providerId: "zitadel",
+            onSubmit$={async () => {
+              await signIn.submit({
+                providerId: 'zitadel',
                 options: { callbackUrl },
               });
             }}

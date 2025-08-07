@@ -1,4 +1,4 @@
-import { component$, Slot, useErrorBoundary } from "@builder.io/qwik";
+import { component$, Slot, useErrorBoundary } from '@builder.io/qwik';
 
 export interface ErrorBoundaryProps {
   fallback?: string;
@@ -42,7 +42,7 @@ export const ErrorBoundary = component$<ErrorBoundaryProps>((props) => {
   const errorBoundary = useErrorBoundary();
 
   if (errorBoundary.error) {
-    console.error("Error Boundary caught an error:", errorBoundary.error);
+    console.error('Error Boundary caught an error:', errorBoundary.error);
 
     if (props.fallback) {
       return <div>{props.fallback}</div>;
