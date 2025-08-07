@@ -1,10 +1,11 @@
 import { component$, Slot, useErrorBoundary } from '@builder.io/qwik';
 
-export interface ErrorBoundaryProps {
+interface ErrorBoundaryProps {
   fallback?: string;
   showDetails?: boolean;
 }
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * Error Boundary Component
  *
