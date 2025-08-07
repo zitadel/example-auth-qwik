@@ -1,0 +1,30 @@
+import { SignOutButton } from "./SignOutButton";
+import { component$ } from "@builder.io/qwik";
+
+type HeaderProps = {
+  isAuthenticated: boolean;
+};
+
+export const Header = component$<HeaderProps>((props) => {
+  return (
+    <header class="border-b border-gray-200 bg-white">
+      <div class="mx-auto max-w-7xl px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <img
+              src="/app-logo.svg"
+              alt="App Icon"
+              width={40}
+              height={40}
+              class="h-8 w-8"
+            />
+            <h1 class="text-xl font-semibold text-gray-900">
+              Demo Application
+            </h1>
+          </div>
+          {props.isAuthenticated ? <SignOutButton /> : <></>}
+        </div>
+      </div>
+    </header>
+  );
+});
