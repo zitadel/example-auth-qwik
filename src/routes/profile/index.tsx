@@ -1,37 +1,23 @@
-import { component$, useSignal, useTask$ } from '@builder.io/qwik';
+import { component$ } from '@builder.io/qwik';
+import type { RequestHandler } from '@builder.io/qwik-city';
 import { Header } from '~/components/Header';
 import { Footer } from '~/components/Footer';
-import { useSession, useSignIn } from '~/routes/plugin@auth';
+import { useSession } from '~/routes/plugin@auth';
+
+/**
+ * Server-side authentication check - runs before component renders
+ */
+export const onRequest: RequestHandler = ({ sharedMap, redirect, url }) => {
+  const session = sharedMap.get('session');
+
+  if (!session) {
+    throw redirect(302, `/auth/signin?callbackUrl=${url.pathname}`);
+  }
+};
 
 // noinspection JSUnusedGlobalSymbols
 export default component$(() => {
   const session = useSession();
-  const signIn = useSignIn();
-  const isLoading = useSignal(true);
-
-  useTask$(async ({ track }) => {
-    track(() => session.value);
-
-    if (session.value === undefined) {
-      isLoading.value = true;
-    } else if (session.value === null) {
-      // Not authenticated, redirect to sign in
-      await signIn.submit({
-        providerId: 'zitadel',
-        options: { callbackUrl: '/profile' },
-      });
-    } else {
-      isLoading.value = false;
-    }
-  });
-
-  if (isLoading.value) {
-    return (
-      <div class="flex min-h-screen items-center justify-center">
-        <p>Loading your session…</p>
-      </div>
-    );
-  }
 
   return (
     <div class="flex min-h-screen flex-col bg-gray-50">
@@ -72,7 +58,7 @@ export default component$(() => {
             </p>
             <div class="overflow-x-auto rounded-lg bg-gray-900 p-6">
               <pre class="font-mono text-sm leading-relaxed text-green-400">
-                {JSON.stringify(session, null, 2)}
+                {JSON.stringify(session.value, null, 2)}
               </pre>
             </div>
           </div>

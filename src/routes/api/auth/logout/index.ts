@@ -29,7 +29,10 @@ export const onPost: RequestHandler = async ({
     json(400, { error: 'No valid session or ID token found' });
     return;
   } else {
-    const { url, state } = await buildLogoutUrl(session.idToken);
+    const { url, state } = await buildLogoutUrl(
+      session.idToken,
+      (key: string) => env.get(`VITE_${key}`),
+    );
 
     cookie.set('logout_state', state, {
       httpOnly: true,

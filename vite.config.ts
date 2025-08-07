@@ -26,6 +26,7 @@ export default defineConfig((): UserConfig => {
 			exclude: [],
 		},
 		server: {
+			port: Number(process.env.PORT) || Number(process.env.VITE_PORT) || 3000,
 			headers: {
 				'Cache-Control': 'public, max-age=0',
 			},

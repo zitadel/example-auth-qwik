@@ -152,6 +152,16 @@ export const getAuthConfig = (env: (key: string) => string | undefined): AuthCon
 
 	callbacks: {
 		/**
+		 * Controls where users are redirected after successful authentication.
+		 *
+		 * @param options.baseUrl - Your application's base URL
+		 * @returns The URL to redirect the user to after successful login
+		 */
+		async redirect(options: { baseUrl: string }): Promise<string> {
+			return `${options.baseUrl}/profile`;
+		},
+
+		/**
 		 * This callback is called whenever a JSON Web Token is created (i.e. at sign in)
 		 * or updated (i.e whenever a session is accessed in the client). Anything you
 		 * return here will be saved in the JWT and forwarded to the session callback.
