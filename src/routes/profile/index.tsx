@@ -4,6 +4,7 @@ import { Header } from '~/components/Header';
 import { Footer } from '~/components/Footer';
 import { useSession } from '~/routes/plugin@auth';
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * Server-side authentication check - runs before component renders
  */
@@ -11,7 +12,7 @@ export const onRequest: RequestHandler = ({ sharedMap, redirect, url }) => {
   const session = sharedMap.get('session');
 
   if (!session) {
-    throw redirect(302, `/auth/signin?callbackUrl=${url.pathname}`);
+    throw redirect(302, `/auth/login?callbackUrl=${url.pathname}`);
   }
 };
 

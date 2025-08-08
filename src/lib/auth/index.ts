@@ -146,7 +146,7 @@ export const getAuthConfig = (env: (key: string) => string | undefined): AuthCon
 	secret: env('SESSION_SECRET'),
 
 	pages: {
-		signIn: '/auth/signin',
+		signIn: '/auth/login',
 		error: '/auth/error',
 	},
 
