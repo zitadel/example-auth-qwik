@@ -1,7 +1,7 @@
 import { component$ } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
-import { getMessage } from '../message';
 import { useSignIn } from '~/routes/plugin@auth';
+import { getMessage } from '~/lib/auth/message.js';
 
 // noinspection JSUnusedGlobalSymbols
 export default component$(() => {

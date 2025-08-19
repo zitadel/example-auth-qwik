@@ -1,6 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
-import { getMessage } from '../message';
+import { getMessage } from '~/lib/auth/message.js';
 
 // noinspection JSUnusedGlobalSymbols
 /**
