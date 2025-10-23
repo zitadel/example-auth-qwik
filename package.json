@@ -20,7 +20,8 @@
     "preview": "qwik build preview && vite preview --open",
     "start": "vite --open --mode ssr",
     "format": "prettier --write .",
-    "qwik": "qwik"
+    "qwik": "qwik",
+	"prepack": "tsc --noEmit"
   },
   "devDependencies": {
     "@auth/qwik": "^0.8.0",
@@ -39,7 +40,8 @@
     "typescript-eslint": "8.26.1",
     "typescript-plugin-css-modules": "latest",
     "vite": "^7.1.11",
-    "vite-tsconfig-paths": "^4.2.1"
+    "vite-tsconfig-paths": "^4.2.1",
+    "knip": "^5.64.1"
   },
   "dependencies": {
     "@auth/core": "^0.40.0",
