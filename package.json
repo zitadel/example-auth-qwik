@@ -21,7 +21,8 @@
     "start": "vite --open --mode ssr",
     "format": "prettier --write .",
     "qwik": "qwik",
-    "prepack": "tsc --noEmit"
+    "prepack": "tsc --noEmit",
+    "test": "playwright test"
   },
   "devDependencies": {
     "@auth/qwik": "^0.8.0",
