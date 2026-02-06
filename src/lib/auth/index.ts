@@ -1,11 +1,12 @@
 import Zitadel from '@auth/core/providers/zitadel';
-import { randomUUID } from 'crypto';
 import * as oidc from 'openid-client';
 import type { JWT } from '@auth/core/jwt';
 import type { Account, Profile, User, Session } from '@auth/core/types';
 import { ZITADEL_SCOPES } from './scopes.js';
 import type { AdapterUser } from '@auth/core/adapters';
 import type { AuthConfig } from '@auth/core';
+
+const createState = (): string => globalThis.crypto.randomUUID();
 
 /**
  * Automatically refreshes an expired access token using the refresh token.
@@ -107,7 +108,7 @@ export async function buildLogoutUrl(
 		env('ZITADEL_CLIENT_SECRET')!
 	);
 
-	const state: string = randomUUID();
+	const state: string = createState();
 	const urlObj = oidc.buildEndSessionUrl(oidcConfig, {
 		id_token_hint: idToken,
 		post_logout_redirect_uri: env('ZITADEL_POST_LOGOUT_URL')!,
