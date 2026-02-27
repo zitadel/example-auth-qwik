@@ -60,7 +60,9 @@ export default tseslint.config(
         ...globals.serviceworker,
       },
       parserOptions: {
-        projectService: true,
+        projectService: {
+          allowDefaultProject: ['knip.config.js', 'prettier.config.mjs'],
+        },
         tsconfigRootDir: import.meta.dirname,
       },
     },
