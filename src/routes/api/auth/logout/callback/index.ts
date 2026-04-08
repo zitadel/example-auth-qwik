@@ -9,7 +9,7 @@ import { type RequestHandler } from '@builder.io/qwik-city';
  * If validation is successful, it clears the user's session cookies and
  * redirects to a success page. Otherwise, it redirects to an error page.
  *
- * @param requestContext - The incoming Qwik City request context, which contains the
+ * @param event - The incoming Qwik City request event object, which contains the
  * URL and its search parameters, including the `state` from the IdP.
  * @returns A redirect response that either redirects the user to a success
  * or error page. Upon success, it includes headers to delete session cookies.
@@ -21,6 +21,12 @@ export const onGet: RequestHandler = ({ url, cookie, redirect, headers }) => {
   if (state && logoutStateCookie && state === logoutStateCookie.value) {
     const successUrl = new URL('/logout/success', url.href);
     headers.set('Clear-Site-Data', '"cookies"');
+    for (const name of Object.keys(cookie.getAll())) {
+      if (name.includes('authjs.')) {
+        cookie.delete(name, { path: '/' });
+      }
+    }
+    cookie.delete('logout_state', { path: '/api/auth/logout/callback' });
     throw redirect(302, successUrl.href);
   } else {
     const errorUrl = new URL('/logout/error', url.href);
