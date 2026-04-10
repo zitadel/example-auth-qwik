@@ -159,7 +159,8 @@ export const getAuthConfig = (env: (key: string) => string | undefined): AuthCon
 		 * @returns The URL to redirect the user to after successful login
 		 */
 		async redirect(options: { baseUrl: string }): Promise<string> {
-			return `${options.baseUrl}/profile`;
+			const postLoginUrl = env('ZITADEL_POST_LOGIN_URL') || '/profile';
+			return postLoginUrl.startsWith('http') ? postLoginUrl : `${options.baseUrl}${postLoginUrl}`;
 		},
 
 		/**

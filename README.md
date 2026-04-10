@@ -79,6 +79,10 @@ VITE_ZITADEL_CALLBACK_URL="http://localhost:3000/auth/callback/zitadel"
 # URL where users are redirected after logout. This should match a Post Logout
 # Redirect URI configured in your ZITADEL application settings.
 VITE_ZITADEL_POST_LOGOUT_URL="http://localhost:3000/api/auth/logout/callback"
+
+# Optional. URL where users are redirected after successful login.
+# Defaults to "/profile" if not specified.
+VITE_ZITADEL_POST_LOGIN_URL="/profile"
 ```
 
 ### Installation and Running
