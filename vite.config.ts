@@ -1,4 +1,4 @@
-import { defineConfig, type UserConfig } from 'vite';
+import { defineConfig, loadEnv, type UserConfig } from 'vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
 import { qwikCity } from '@builder.io/qwik-city/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -14,7 +14,9 @@ const { dependencies = {}, devDependencies = {} } = pkg as any as {
 
 errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 
-export default defineConfig((): UserConfig => {
+export default defineConfig(({ mode }): UserConfig => {
+	const env = loadEnv(mode, process.cwd(), '');
+	const port = Number(env.PORT) || 3000;
 	return {
 		plugins: [
 			qwikCity(),
@@ -26,7 +28,7 @@ export default defineConfig((): UserConfig => {
 			exclude: [],
 		},
 		server: {
-			port: Number(process.env.PORT) || Number(process.env.VITE_PORT) || 3000,
+			port,
 			headers: {
 				'Cache-Control': 'public, max-age=0',
 			},

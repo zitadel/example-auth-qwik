@@ -43,7 +43,7 @@ To run the application, you first need to copy the `.env.example` file to a new 
 ```dotenv
 # Port number where your Qwik server will listen for incoming HTTP requests.
 # Change this if port 3000 is already in use on your system.
-VITE_PORT=3000
+PORT=3000
 
 # Session timeout in seconds. Users will be automatically logged out after this
 # duration of inactivity. 3600 seconds = 1 hour.
