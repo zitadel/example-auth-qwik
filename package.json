@@ -1,7 +1,6 @@
 {
   "name": "example-qwik-auth",
   "license": "Apache-2.0",
-  "description": "Qwik application demonstrating ZITADEL authentication with PKCE",
   "engines": {
     "node": ">=22.0.0"
   },
@@ -16,8 +15,6 @@
     "start": "vite --mode ssr",
     "dev": "vite --mode ssr",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
-    "fmt": "prettier --write .",
-    "fmt.check": "prettier --check .",
     "lint": "eslint .",
     "preview": "qwik build preview && vite preview --open",
     "format": "prettier --write .",
