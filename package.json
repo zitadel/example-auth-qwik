@@ -1,6 +1,6 @@
 {
-  "name": "my-qwik-empty-starter",
-  "description": "Blank project with routing included",
+  "name": "example-qwik-auth",
+  "description": "Qwik application demonstrating ZITADEL authentication with PKCE",
   "engines": {
     "node": ">=22.0.0"
   },
