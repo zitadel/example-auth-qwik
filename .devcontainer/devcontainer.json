@@ -1,5 +1,5 @@
 {
-  "name": "ZITADEL Example Qwik Auth",
+  "name": "Zitadel Example Qwik Auth",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:22-bookworm",
   "forwardPorts": [3000],
   "portsAttributes": {
