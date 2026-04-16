@@ -25,7 +25,7 @@ export default tseslint.config(
             'knip.config.js',
             'prettier.config.mjs',
             'commitlint.config.js',
-            'eslint.config.js',
+            'eslint.config.mjs',
             'test/app.spec.ts',
           ],
         },
