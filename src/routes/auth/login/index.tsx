@@ -65,7 +65,7 @@ export default component$(() => {
                 clip-rule="evenodd"
               />
             </svg>
-            Sign in with ZITADEL
+            Sign in with Zitadel
           </button>
         </div>
 
