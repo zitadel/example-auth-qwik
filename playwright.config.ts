@@ -8,7 +8,7 @@ const testEnv = {
   VITE_ZITADEL_DOMAIN: 'https://test.zitadel.cloud',
   VITE_ZITADEL_CLIENT_ID: 'test-client-id',
   VITE_ZITADEL_CLIENT_SECRET: 'test-client-secret',
-  VITE_ZITADEL_CALLBACK_URL: 'http://localhost:3000/auth/callback',
+  VITE_ZITADEL_CALLBACK_URL: 'http://localhost:3000/auth/callback/zitadel',
   VITE_ZITADEL_POST_LOGOUT_URL:
     'http://localhost:3000/api/auth/logout/callback',
 };
