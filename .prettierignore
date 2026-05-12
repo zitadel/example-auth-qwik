@@ -1,37 +1,31 @@
-**/*.log
-**/.DS_Store
-*.
-.vscode/settings.json
-.history
-.yarn
-bazel-*
-bazel-bin
-bazel-out
-bazel-qwik
-bazel-testlogs
-dist
-dist-dev
-lib
-lib-types
-etc
-external
+# Dependency directories
 node_modules
-temp
-tsc-out
-tsdoc-metadata.json
-target
-output
-rollup.config.js
-build
-.cache
-.vscode
-.rollup.cache
-tsconfig.tsbuildinfo
-vite.config.ts
-*.spec.tsx
-*.spec.ts
-.netlify
-pnpm-lock.yaml
-package-lock.json
-yarn.lock
-server
+
+# Build output
+/dist
+/build
+/out
+
+# Version control directories
+.git
+
+# Logs
+*.log
+
+# Other common directories to ignore
+/public
+/assets
+
+# Minified files
+*.min.*
+
+# Source maps
+*.map
+
+# Image files
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+

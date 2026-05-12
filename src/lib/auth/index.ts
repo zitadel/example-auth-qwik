@@ -34,43 +34,46 @@ const createState = (): string => globalThis.crypto.randomUUID();
  * @param env - The environment variable getter function.
  * @returns Promise resolving to updated JWT with new tokens or error state
  */
-async function refreshAccessToken(token: JWT, env: (key: string) => string | undefined): Promise<JWT> {
-	if (!token.refreshToken) {
-		console.error('No refresh token available for refresh');
-		return {
-			...token,
-			error: 'RefreshAccessTokenError',
-		};
-	}
+async function refreshAccessToken(
+  token: JWT,
+  env: (key: string) => string | undefined,
+): Promise<JWT> {
+  if (!token.refreshToken) {
+    console.error('No refresh token available for refresh');
+    return {
+      ...token,
+      error: 'RefreshAccessTokenError',
+    };
+  }
 
-	try {
-		const oidcConfig = await oidc.discovery(
-			new URL(env('ZITADEL_DOMAIN')!),
-			env('ZITADEL_CLIENT_ID')!,
-			env('ZITADEL_CLIENT_SECRET')!
-		);
+  try {
+    const oidcConfig = await oidc.discovery(
+      new URL(env('ZITADEL_DOMAIN')!),
+      env('ZITADEL_CLIENT_ID')!,
+      env('ZITADEL_CLIENT_SECRET')!,
+    );
 
-		const tokenEndpointResponse = await oidc.refreshTokenGrant(
-			oidcConfig,
-			token.refreshToken as string
-		);
+    const tokenEndpointResponse = await oidc.refreshTokenGrant(
+      oidcConfig,
+      token.refreshToken as string,
+    );
 
-		return {
-			...token,
-			accessToken: tokenEndpointResponse.access_token,
-			expiresAt: tokenEndpointResponse.expires_in
-				? Date.now() + tokenEndpointResponse.expires_in * 1000
-				: Date.now() + 3600 * 1000,
-			refreshToken: tokenEndpointResponse.refresh_token ?? token.refreshToken,
-			error: undefined,
-		};
-	} catch (error: unknown) {
-		console.error('Token refresh failed:', error);
-		return {
-			...token,
-			error: 'RefreshAccessTokenError',
-		};
-	}
+    return {
+      ...token,
+      accessToken: tokenEndpointResponse.access_token,
+      expiresAt: tokenEndpointResponse.expires_in
+        ? Date.now() + tokenEndpointResponse.expires_in * 1000
+        : Date.now() + 3600 * 1000,
+      refreshToken: tokenEndpointResponse.refresh_token ?? token.refreshToken,
+      error: undefined,
+    };
+  } catch (error: unknown) {
+    console.error('Token refresh failed:', error);
+    return {
+      ...token,
+      error: 'RefreshAccessTokenError',
+    };
+  }
 }
 
 /**
@@ -99,23 +102,23 @@ async function refreshAccessToken(token: JWT, env: (key: string) => string | und
  * @returns Promise containing the logout URL to redirect to and state value for validation
  */
 export async function buildLogoutUrl(
-	idToken: string,
-	env: (key: string) => string | undefined
+  idToken: string,
+  env: (key: string) => string | undefined,
 ): Promise<{ url: string; state: string }> {
-	const oidcConfig = await oidc.discovery(
-		new URL(env('ZITADEL_DOMAIN')!),
-		env('ZITADEL_CLIENT_ID')!,
-		env('ZITADEL_CLIENT_SECRET')!
-	);
+  const oidcConfig = await oidc.discovery(
+    new URL(env('ZITADEL_DOMAIN')!),
+    env('ZITADEL_CLIENT_ID')!,
+    env('ZITADEL_CLIENT_SECRET')!,
+  );
 
-	const state: string = createState();
-	const urlObj = oidc.buildEndSessionUrl(oidcConfig, {
-		id_token_hint: idToken,
-		post_logout_redirect_uri: env('ZITADEL_POST_LOGOUT_URL')!,
-		state,
-	});
+  const state: string = createState();
+  const urlObj = oidc.buildEndSessionUrl(oidcConfig, {
+    id_token_hint: idToken,
+    post_logout_redirect_uri: env('ZITADEL_POST_LOGOUT_URL')!,
+    state,
+  });
 
-	return { url: urlObj.toString(), state };
+  return { url: urlObj.toString(), state };
 }
 
 /**
@@ -125,114 +128,118 @@ export async function buildLogoutUrl(
  * Flow with PKCE (Proof Key for Code Exchange) for maximum security. It includes
  * automatic token refresh to maintain long-lived user sessions.
  */
-export const getAuthConfig = (env: (key: string) => string | undefined): AuthConfig => ({
-	providers: [
-		Zitadel({
-			issuer: env('ZITADEL_DOMAIN')!,
-			clientId: env('ZITADEL_CLIENT_ID')!,
-			clientSecret: env('ZITADEL_CLIENT_SECRET')!,
-			authorization: {
-				params: {
-					scope: ZITADEL_SCOPES,
-				},
-			},
-		}),
-	],
+export const getAuthConfig = (
+  env: (key: string) => string | undefined,
+): AuthConfig => ({
+  providers: [
+    Zitadel({
+      issuer: env('ZITADEL_DOMAIN')!,
+      clientId: env('ZITADEL_CLIENT_ID')!,
+      clientSecret: env('ZITADEL_CLIENT_SECRET')!,
+      authorization: {
+        params: {
+          scope: ZITADEL_SCOPES,
+        },
+      },
+    }),
+  ],
 
-	session: {
-		strategy: 'jwt',
-		maxAge: Number(env('SESSION_DURATION')) || 3600,
-	},
+  session: {
+    strategy: 'jwt',
+    maxAge: Number(env('SESSION_DURATION')) || 3600,
+  },
 
-	secret: env('SESSION_SECRET'),
+  secret: env('SESSION_SECRET'),
 
-	pages: {
-		signIn: '/auth/login',
-		error: '/auth/error',
-	},
+  pages: {
+    signIn: '/auth/login',
+    error: '/auth/error',
+  },
 
-	callbacks: {
-		/**
-		 * Controls where users are redirected after successful authentication.
-		 *
-		 * @param options.baseUrl - Your application's base URL
-		 * @returns The URL to redirect the user to after successful login
-		 */
-		async redirect(options: { baseUrl: string }): Promise<string> {
-			const postLoginUrl = env('ZITADEL_POST_LOGIN_URL') || '/profile';
-			return postLoginUrl.startsWith('http') ? postLoginUrl : `${options.baseUrl}${postLoginUrl}`;
-		},
+  callbacks: {
+    /**
+     * Controls where users are redirected after successful authentication.
+     *
+     * @param options.baseUrl - Your application's base URL
+     * @returns The URL to redirect the user to after successful login
+     */
+    async redirect(options: { baseUrl: string }): Promise<string> {
+      const postLoginUrl = env('ZITADEL_POST_LOGIN_URL') || '/profile';
+      return postLoginUrl.startsWith('http')
+        ? postLoginUrl
+        : `${options.baseUrl}${postLoginUrl}`;
+    },
 
-		/**
-		 * This callback is called whenever a JSON Web Token is created (i.e. at sign in)
-		 * or updated (i.e whenever a session is accessed in the client). Anything you
-		 * return here will be saved in the JWT and forwarded to the session callback.
-		 * There you can control what should be returned to the client. Anything else
-		 * will be kept from your frontend. The JWT is encrypted by default via your
-		 * AUTH_SECRET environment variable.
-		 *
-		 * @param params.token      - When `trigger` is `"signIn"` or `"signUp"`, it will
-		 * be a subset of {@link JWT}. Otherwise, it will
-		 * be the full {@link JWT} for subsequent calls.
-		 * @param params.user       - Either the result of the OAuth profile or the
-		 * credentials authorize callback. Always present
-		 * on sign-in/up.
-		 * @param params.account    - Info about the provider and token-set.
-		 * Only on `"signIn"`/`"signUp"`.
-		 * @param params.profile    - Raw provider profile (OIDC = decoded ID token or
-		 * /userinfo). Only on `"signIn"`.
-		 * @param params.trigger    - Why the callback ran: `"signIn"`, `"signUp"`,
-		 * or `"update"`.
-		 * @param params.isNewUser  - @deprecated use `trigger === "signUp"` instead.
-		 * @param params.session    - When using `session.strategy: "jwt"`, the data
-		 * sent from `useSession().update`. ⚠ Validate it!
-		 *
-		 * @returns A {@link JWT} or `null` to stop the sign‐in.
-		 */
-		async jwt(params: {
-			token: JWT;
-			account?: Account | null;
-			user: User | AdapterUser;
-			profile?: Profile;
-			trigger?: 'signIn' | 'signUp' | 'update';
-			isNewUser?: boolean;
-			session?: Session;
-		}): Promise<JWT> {
-			const { token, account, user } = params;
+    /**
+     * This callback is called whenever a JSON Web Token is created (i.e. at sign in)
+     * or updated (i.e whenever a session is accessed in the client). Anything you
+     * return here will be saved in the JWT and forwarded to the session callback.
+     * There you can control what should be returned to the client. Anything else
+     * will be kept from your frontend. The JWT is encrypted by default via your
+     * AUTH_SECRET environment variable.
+     *
+     * @param params.token      - When `trigger` is `"signIn"` or `"signUp"`, it will
+     * be a subset of {@link JWT}. Otherwise, it will
+     * be the full {@link JWT} for subsequent calls.
+     * @param params.user       - Either the result of the OAuth profile or the
+     * credentials authorize callback. Always present
+     * on sign-in/up.
+     * @param params.account    - Info about the provider and token-set.
+     * Only on `"signIn"`/`"signUp"`.
+     * @param params.profile    - Raw provider profile (OIDC = decoded ID token or
+     * /userinfo). Only on `"signIn"`.
+     * @param params.trigger    - Why the callback ran: `"signIn"`, `"signUp"`,
+     * or `"update"`.
+     * @param params.isNewUser  - @deprecated use `trigger === "signUp"` instead.
+     * @param params.session    - When using `session.strategy: "jwt"`, the data
+     * sent from `useSession().update`. ⚠ Validate it!
+     *
+     * @returns A {@link JWT} or `null` to stop the sign‐in.
+     */
+    async jwt(params: {
+      token: JWT;
+      account?: Account | null;
+      user: User | AdapterUser;
+      profile?: Profile;
+      trigger?: 'signIn' | 'signUp' | 'update';
+      isNewUser?: boolean;
+      session?: Session;
+    }): Promise<JWT> {
+      const { token, account, user } = params;
 
-			if (account && user) {
-				return {
-					...token,
-					idToken: account.id_token,
-					accessToken: account.access_token,
-					refreshToken: account.refresh_token,
-					expiresAt: account.expires_at
-						? account.expires_at * 1000
-						: Date.now() + 3600 * 1000,
-					error: undefined,
-				};
-			}
+      if (account && user) {
+        return {
+          ...token,
+          idToken: account.id_token,
+          accessToken: account.access_token,
+          refreshToken: account.refresh_token,
+          expiresAt: account.expires_at
+            ? account.expires_at * 1000
+            : Date.now() + 3600 * 1000,
+          error: undefined,
+        };
+      }
 
-			if (Date.now() < (token.expiresAt as number)) {
-				return token;
-			}
+      if (Date.now() < (token.expiresAt as number)) {
+        return token;
+      }
 
-			return refreshAccessToken(token, env);
-		},
+      return refreshAccessToken(token, env);
+    },
 
-		/**
-		 * Shapes the session object that your application receives.
-		 *
-		 * @param params.session - The base session object
-		 * @param params.token - The JWT token containing all stored data
-		 */
-		async session(params: { session: Session; token: JWT }): Promise<Session> {
-			const { session, token } = params;
-			session.idToken = token.idToken;
-			session.accessToken = token.accessToken;
-			session.error = token.error;
+    /**
+     * Shapes the session object that your application receives.
+     *
+     * @param params.session - The base session object
+     * @param params.token - The JWT token containing all stored data
+     */
+    async session(params: { session: Session; token: JWT }): Promise<Session> {
+      const { session, token } = params;
+      session.idToken = token.idToken;
+      session.accessToken = token.accessToken;
+      session.error = token.error;
 
-			return session;
-		},
-	},
+      return session;
+    },
+  },
 });

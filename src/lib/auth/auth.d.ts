@@ -1,7 +1,7 @@
 // types/auth-augmentations.d.ts
 
-import type {Session as CoreSession} from '@auth/core';
-import type {JWT as CoreJWT} from '@auth/core/jwt';
+import type { Session as CoreSession } from '@auth/core';
+import type { JWT as CoreJWT } from '@auth/core/jwt';
 
 /**
  * Extend Auth.js core Session to include ZITADEL tokens.
@@ -41,7 +41,7 @@ declare module '@auth/core/jwt' {
  */
 declare module '@hono/auth-js/dist/index' {
   // noinspection JSUnusedGlobalSymbols
-	interface AuthUser {
+  interface AuthUser {
     /** Extended session with ZITADEL tokens */
     session: CoreSession & {
       idToken?: string;
