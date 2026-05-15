@@ -18,6 +18,7 @@
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "depcheck": "npx knip",
     "prepack": "tsc --noEmit",
     "preview": "qwik build preview && vite preview --open",
     "qwik": "qwik",
