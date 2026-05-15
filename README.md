@@ -91,9 +91,9 @@ Follow these steps to get the application running:
 
 ```bash
 # 1. Clone the repository
-git clone git@github.com:zitadel/example-qwik-auth.git
+git clone git@github.com:zitadel/example-auth-qwik.git
 
-cd example-qwik-auth
+cd example-auth-qwik
 
 # 2. Install the project dependencies
 npm install
