@@ -1,4 +1,4 @@
-import { QwikAuth$ } from '@auth/qwik';
+import { QwikAuth$ } from '@zitadel/qwik-auth';
 import { getAuthConfig } from '~/lib/auth';
 import { RequestEventCommon } from '@builder.io/qwik-city';
 

@@ -25,7 +25,7 @@
     "test": "playwright test"
   },
   "devDependencies": {
-    "@auth/qwik": "^0.8.0",
+    "@zitadel/qwik-auth": "^0.1.0",
     "@builder.io/qwik": "^1.19.1",
     "@builder.io/qwik-city": "^1.19.2",
     "@commitlint/config-conventional": "^20.5.0",
