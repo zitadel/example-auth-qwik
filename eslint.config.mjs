@@ -3,6 +3,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import { globalIgnores } from 'eslint/config';
 import { qwikEslint9Plugin } from 'eslint-plugin-qwik';
+import prettier from 'eslint-config-prettier';
 
 const ignores = ['dist/**', 'node_modules/**', 'build/**', 'server/**'];
 
@@ -11,6 +12,7 @@ export default tseslint.config(
   js.configs.recommended,
   tseslint.configs.recommended,
   qwikEslint9Plugin.configs.recommended,
+  prettier,
   {
     languageOptions: {
       globals: {

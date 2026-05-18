@@ -23,6 +23,7 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+qwik.env.d.ts
 
 # Temporary build artifacts
 tmp/

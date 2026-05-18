@@ -1,5 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 
+// noinspection JSUnusedGlobalSymbols
 export const Footer = component$(() => {
   return (
     <footer class="border-t border-gray-200 bg-gray-100">

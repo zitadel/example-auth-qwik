@@ -1,3 +1,4 @@
+// noinspection JSUnusedGlobalSymbols
 import { component$, isDev } from '@builder.io/qwik';
 import { QwikCityProvider, RouterOutlet } from '@builder.io/qwik-city';
 import { RouterHead } from './components/router-head/router-head';

@@ -16,6 +16,7 @@ import {
 } from '@builder.io/qwik/server';
 import Root from './root';
 
+// noinspection JSUnusedGlobalSymbols
 export default function (opts: RenderToStreamOptions) {
   return renderToStream(<Root />, {
     ...opts,

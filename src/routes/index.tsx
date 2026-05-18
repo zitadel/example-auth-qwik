@@ -177,6 +177,7 @@ export default component$(() => {
                     <a
                       href="https://zitadel.com/docs/guides/integrate/oauth-recommended-flows"
                       target="_blank"
+                      rel="noreferrer"
                       class="text-blue-600 hover:text-blue-700"
                     >
                       Learn more about PKCE

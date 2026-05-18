@@ -21,7 +21,7 @@ export default component$(() => {
   const session = useSession();
 
   return (
-    <div class="flex min-h-screen flex-col bg-gray-50">
+    <>
       <Header isAuthenticated={true} />
       <main class="flex-1 px-6 py-12">
         <div class="mx-auto max-w-5xl">
@@ -210,6 +210,6 @@ export default component$(() => {
         </div>
       </main>
       <Footer />
-    </div>
+    </>
   );
 });
