@@ -2,10 +2,12 @@ import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import { Header } from '~/components/Header';
 import { Footer } from '~/components/Footer';
-import { signIn } from '~/routes/plugin@auth';
+import { useSignIn } from '~/routes/plugin@auth';
 
 // noinspection JSUnusedGlobalSymbols
 export default component$(() => {
+  const signIn = useSignIn();
+
   return (
     <>
       <Header isAuthenticated={false} />
@@ -113,7 +115,7 @@ export default component$(() => {
                   </div>
                   <button
                     onClick$={async () => {
-                      await signIn('zitadel');
+                      await signIn.submit({ providerId: 'zitadel' });
                     }}
                     class="mb-6 flex w-full cursor-pointer items-center justify-center space-x-2 rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition duration-200 hover:bg-blue-700"
                   >

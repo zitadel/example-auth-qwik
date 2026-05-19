@@ -1,11 +1,12 @@
 import { component$ } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
-import { signIn } from '~/routes/plugin@auth';
+import { useSignIn } from '~/routes/plugin@auth';
 import { getMessage } from '~/lib/auth/message.js';
 
 // noinspection JSUnusedGlobalSymbols
 export default component$(() => {
   const loc = useLocation();
+  const signIn = useSignIn();
 
   const error = loc.url.searchParams.get('error');
   const callbackUrl = loc.url.searchParams.get('callbackUrl');
@@ -44,10 +45,12 @@ export default component$(() => {
         <div class="mt-10">
           <button
             onClick$={async () => {
-              await signIn(
-                'zitadel',
-                callbackUrl ? { redirectTo: callbackUrl } : {},
-              );
+              await signIn.submit({
+                providerId: 'zitadel',
+                ...(callbackUrl
+                  ? { options: { redirectTo: callbackUrl } }
+                  : {}),
+              });
             }}
             class="flex w-full items-center justify-center gap-3 rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition duration-200 hover:bg-blue-700"
           >
