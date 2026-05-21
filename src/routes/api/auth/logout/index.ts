@@ -31,7 +31,7 @@ export const onPost: RequestHandler = async ({
   } else {
     const { url, state } = await buildLogoutUrl(
       session.idToken,
-      (key: string) => env.get(`VITE_${key}`),
+      (key: string) => env.get(key),
     );
 
     cookie.set('logout_state', state, {

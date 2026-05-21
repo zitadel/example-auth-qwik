@@ -30,7 +30,7 @@ export const onGet: RequestHandler = async ({ sharedMap, json, env }) => {
 
   try {
     const response = await fetch(
-      `${env.get('VITE_ZITADEL_DOMAIN')}/oidc/v1/userinfo`,
+      `${env.get('ZITADEL_DOMAIN')}/oidc/v1/userinfo`,
       {
         headers: {
           Authorization: `Bearer ${session.accessToken}`,
