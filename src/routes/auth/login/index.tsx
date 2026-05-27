@@ -20,7 +20,7 @@ export default component$(() => {
   const loc = useLocation();
 
   const error = loc.url.searchParams.get('error');
-  const callbackUrl = loc.url.searchParams.get('callbackUrl') ?? '/';
+  const callbackUrl = loc.url.searchParams.get('callbackUrl') ?? '/profile';
 
   const csrfToken = useSignal('');
   const providers = useStore<{
