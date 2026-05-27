@@ -32,6 +32,7 @@ export default defineConfig(({ mode }): UserConfig => {
       headers: {
         'Cache-Control': 'public, max-age=0',
         'X-Frame-Options': 'DENY',
+        'X-Content-Type-Options': 'nosniff',
         'Content-Security-Policy':
           "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline';",
         'Referrer-Policy': 'strict-origin-when-cross-origin',
