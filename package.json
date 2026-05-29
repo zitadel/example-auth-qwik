@@ -33,7 +33,7 @@
     "@playwright/test": "^1.56.1",
     "@tailwindcss/vite": "^4.3.0",
     "@types/node": "^22",
-    "@zitadel/qwik-auth": "^1.0.0",
+    "@zitadel/qwik-auth": "^1.1.2",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-qwik": "^1.15.0",
