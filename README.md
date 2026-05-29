@@ -22,7 +22,7 @@ Before you begin, ensure you have the following:
 
 #### System Requirements
 
-- Node.js (v20 or later is recommended)
+- Node.js (v22 or later is recommended)
 - npm, yarn, or pnpm package manager
 
 #### Account Setup
@@ -31,7 +31,7 @@ You'll need a ZITADEL account and application configured. Follow the [ZITADEL do
 
 > **Important:** Configure the following URLs in your ZITADEL application settings:
 >
-> - **Redirect URIs:** Add `http://localhost:3000/auth/callback/zitadel` (for development)
+> - **Redirect URIs:** Add `http://localhost:3000/api/auth/callback/zitadel` (for development)
 > - **Post Logout Redirect URIs:** Add `http://localhost:3000/api/auth/logout/callback` (for development)
 >
 > These URLs must exactly match what your Qwik application uses. For production, add your production URLs.
@@ -47,22 +47,22 @@ PORT=3000
 
 # Session timeout in seconds. Users will be automatically logged out after this
 # duration of inactivity. 3600 seconds = 1 hour.
-VITE_SESSION_DURATION=3600
+SESSION_DURATION=3600
 
 # Secret key used to cryptographically sign session cookies to prevent
 # tampering. MUST be a long, random string. Generate a secure key using:
 # node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-VITE_SESSION_SECRET="your-very-secret-and-strong-session-key"
+SESSION_SECRET="your-very-secret-and-strong-session-key"
 
 # Your ZITADEL instance domain URL. Found in your ZITADEL console under
 # instance settings. Include the full https:// URL.
 # Example: https://my-org-a1b2c3.zitadel.cloud
-VITE_ZITADEL_DOMAIN="https://your-zitadel-domain"
+ZITADEL_DOMAIN="https://your-zitadel-domain"
 
 # Application Client ID from your ZITADEL application settings. This unique
 # identifier tells ZITADEL which application is making the authentication
 # request.
-VITE_ZITADEL_CLIENT_ID="your-client-id"
+ZITADEL_CLIENT_ID="your-client-id"
 
 # While the Authorization Code Flow with PKCE for public clients
 # does not strictly require a client secret for OIDC specification compliance,
@@ -70,19 +70,19 @@ VITE_ZITADEL_CLIENT_ID="your-client-id"
 # Therefore, please provide a randomly generated string here.
 # You can generate a secure key using:
 # node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-VITE_ZITADEL_CLIENT_SECRET="your-randomly-generated-client-secret"
+ZITADEL_CLIENT_SECRET="your-randomly-generated-client-secret"
 
 # OAuth callback URL where ZITADEL redirects after user authentication. This
 # MUST exactly match a Redirect URI configured in your ZITADEL application.
-VITE_ZITADEL_CALLBACK_URL="http://localhost:3000/auth/callback/zitadel"
+ZITADEL_CALLBACK_URL="http://localhost:3000/api/auth/callback/zitadel"
 
 # URL where users are redirected after logout. This should match a Post Logout
 # Redirect URI configured in your ZITADEL application settings.
-VITE_ZITADEL_POST_LOGOUT_URL="http://localhost:3000/api/auth/logout/callback"
+ZITADEL_POST_LOGOUT_URL="http://localhost:3000/api/auth/logout/callback"
 
 # Optional. URL where users are redirected after successful login.
 # Defaults to "/profile" if not specified.
-VITE_ZITADEL_POST_LOGIN_URL="/profile"
+ZITADEL_POST_LOGIN_URL="/profile"
 ```
 
 ### Installation and Running

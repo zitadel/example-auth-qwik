@@ -6,5 +6,9 @@ module.exports = {
     'src/routes/**/*.tsx',
     'src/routes/**/*.ts',
   ],
-  ignoreDependencies: ['@commitlint/config-conventional', '@qwik-city-plan'],
+  ignoreDependencies: [
+    '@commitlint/config-conventional',
+    '@qwik-city-plan',
+    '@zitadel/qwik-auth',
+  ],
 };

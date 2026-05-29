@@ -2,17 +2,20 @@ import { component$ } from '@builder.io/qwik';
 import type { RequestHandler } from '@builder.io/qwik-city';
 import { Header } from '~/components/Header';
 import { Footer } from '~/components/Footer';
-import { useSession } from '~/routes/plugin@auth';
+import { useSession, signInUrl } from '~/routes/plugin@auth';
 
 // noinspection JSUnusedGlobalSymbols
 /**
  * Server-side authentication check - runs before component renders
  */
-export const onRequest: RequestHandler = ({ sharedMap, redirect, url }) => {
-  const session = sharedMap.get('session');
+export const onRequest: RequestHandler = async (event) => {
+  const session = event.sharedMap.get('session');
 
   if (!session) {
-    throw redirect(302, `/auth/login?callbackUrl=${url.pathname}`);
+    throw event.redirect(
+      302,
+      await signInUrl(event, { redirectTo: event.url.pathname }),
+    );
   }
 };
 
@@ -21,7 +24,7 @@ export default component$(() => {
   const session = useSession();
 
   return (
-    <div class="flex min-h-screen flex-col bg-gray-50">
+    <>
       <Header isAuthenticated={true} />
       <main class="flex-1 px-6 py-12">
         <div class="mx-auto max-w-5xl">
@@ -210,6 +213,6 @@ export default component$(() => {
         </div>
       </main>
       <Footer />
-    </div>
+    </>
   );
 });

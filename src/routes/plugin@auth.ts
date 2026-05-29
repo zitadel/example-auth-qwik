@@ -1,15 +1,16 @@
-import { QwikAuth$ } from '@auth/qwik';
+import { QwikAuth$ } from '@zitadel/qwik-auth';
+import type { RequestEventCommon } from '@builder.io/qwik-city';
 import { getAuthConfig } from '~/lib/auth';
-import { RequestEventCommon } from '@builder.io/qwik-city';
 
 // noinspection JSUnusedGlobalSymbols
-export const { onRequest, useSession, useSignIn, useSignOut } = QwikAuth$(
-  (event: RequestEventCommon) => {
-    const env = (key: string) => event.env.get(`VITE_${key}`);
-
-    return {
-      ...getAuthConfig(env),
-      trustHost: true,
-    };
-  },
-);
+export const {
+  onRequest,
+  useSession,
+  useSignIn,
+  useSignOut,
+  signInUrl,
+  signOutUrl,
+} = QwikAuth$((event: RequestEventCommon) => ({
+  ...getAuthConfig((key: string) => event.env.get(key)),
+  trustHost: true,
+}));

@@ -1,5 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 
+// noinspection JSUnusedGlobalSymbols
 export const SignOutButton = component$(() => {
   return (
     <form action="/api/auth/logout" method="POST">

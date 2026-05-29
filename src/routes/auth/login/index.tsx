@@ -1,15 +1,48 @@
-import { component$ } from '@builder.io/qwik';
+import {
+  component$,
+  useSignal,
+  useStore,
+  useVisibleTask$,
+} from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
-import { useSignIn } from '~/routes/plugin@auth';
 import { getMessage } from '~/lib/auth/message.js';
+
+interface AuthProvider {
+  readonly id: string;
+  readonly name: string;
+  readonly type: string;
+  readonly signinUrl: string;
+  readonly callbackUrl: string;
+}
 
 // noinspection JSUnusedGlobalSymbols
 export default component$(() => {
   const loc = useLocation();
-  const signIn = useSignIn();
 
   const error = loc.url.searchParams.get('error');
-  const callbackUrl = loc.url.searchParams.get('callbackUrl');
+  const callbackUrl = loc.url.searchParams.get('callbackUrl') ?? '/profile';
+
+  const csrfToken = useSignal('');
+  const providers = useStore<{
+    value: Record<string, AuthProvider> | null;
+  }>({ value: null });
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(async () => {
+    try {
+      const [csrfRes, provRes] = await Promise.all([
+        fetch('/api/auth/csrf'),
+        fetch('/api/auth/providers'),
+      ]);
+      const csrfData = (await csrfRes.json()) as { csrfToken?: string };
+      const provData = (await provRes.json()) as Record<string, AuthProvider>;
+      csrfToken.value = csrfData?.csrfToken ?? '';
+      providers.value = provData;
+    } catch {
+      // Fetch failed; the form will fail to submit. Auth.js will
+      // surface a MissingCSRF error which lands on the error page.
+    }
+  });
 
   return (
     <main class="grid flex-1 place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -42,32 +75,31 @@ export default component$(() => {
             : 'Continue to your account'}
         </p>
 
-        <div class="mt-10">
-          <button
-            onClick$={async () => {
-              await signIn.submit({
-                providerId: 'zitadel',
-                options: {
-                  ...(callbackUrl
-                    ? {
-                        redirectTo: callbackUrl,
-                      }
-                    : {}),
-                },
-              });
-            }}
-            class="flex w-full items-center justify-center gap-3 rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition duration-200 hover:bg-blue-700"
-          >
-            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-              <path
-                fill-rule="evenodd"
-                d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            Sign in with Zitadel
-          </button>
-        </div>
+        {providers.value?.zitadel && (
+          <div class="mt-10">
+            <form
+              action={providers.value.zitadel.signinUrl}
+              method="POST"
+              class="space-y-4"
+            >
+              <input type="hidden" name="csrfToken" value={csrfToken.value} />
+              <input type="hidden" name="callbackUrl" value={callbackUrl} />
+              <button
+                type="submit"
+                class="flex w-full items-center justify-center gap-3 rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition duration-200 hover:bg-blue-700"
+              >
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Sign in with {providers.value.zitadel.name}
+              </button>
+            </form>
+          </div>
+        )}
 
         <div class="mt-8">
           <a
